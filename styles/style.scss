@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+// One of the beauties of preprocessed CSS is that we can dynamically change properties, sweet!
+$delay: 0.015s;
+$duration: 0.6s;
+$easing: cubic-bezier(0.76, 0, 0.24, 1);
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f6f3;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/*
+  Most of properties in this 'rolling-text' class are aesthetic in 
+  purpose but the 'height' & 'overflow' properties are crucial pillars
+  that form part the rolling text effect.
+  Working in unison, the 'height' sets a fixed height equal to our text
+  while 'overflow' enables us to hide our duplicate text and not make it scrollable.
+*/
+.rolling-text {
+  display: inline-block;
+  $font-size: 48px;
+  font-family: 'Playfair Display', serif;
+  font-size: $font-size;
+  line-height: $font-size * 1.5;
+  letter-spacing: $font-size / 2;
+  height: $font-size * 1.5;
+  text-decoration: none;
+  overflow: hidden;
+  color: #1a1a1a;
+
+  &:hover {
+    .letter {
+      transform: translateY(-100%);
+    }
+  }
+
+  /*
+    'transform' CSS property does not work on inline elements
+    so set the diplay of each letter to 'inline-block'
+  */
+  .letter {
+    display: inline-block;
+    transition: transform $duration $easing;
+  }
+
+  /*
+    Target our duplicate text to be of a different color  
+  */
+  div:last-child {
+    color: #d3a13b;
+  }
+
+  /*
+    Our wave effect on our text is realised by gradually increasing
+    the delay on each letter's transition.
+  */
+  @for $i from 1 through 20 {
+    .letter:nth-of-type(#{$i}) {
+      transition-delay: $delay * $i;
+    }
+  }
+}
